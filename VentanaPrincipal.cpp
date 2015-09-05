@@ -5,7 +5,7 @@
 #include "funciones.h"
 
 VentanaPrincipal::VentanaPrincipal(wxWindow *parent):FramePrincipal(parent){
-	barra_estado->SetStatusText(" Administrdor MYSQL CreateBy: SOFTelixBM");
+	barra_estado->SetStatusText(wxT("Administrdor MYSQL CreateBy: Hostelix"));
 	Show();
 }
 
@@ -67,7 +67,7 @@ void VentanaPrincipal::evento_seleccionar_tabla( wxCommandEvent& event )  {
 	Cuadro->DeleteCols(0,Cuadro->wxGrid::GetNumberCols());//Borramos las columnas anteriores para agragar nuevas
 	Cuadro->DeleteRows(0,Cuadro->wxGrid::GetNumberRows());//Borramos las columnas anteriores para agragar nuevas
 	if(sistemas->Verificar_si_recargo_tablas()){
-		wxString consulta="select * from "+db_tablas->GetStringSelection();//Hacemos una consulta
+		wxString consulta=wxT("select * from ")+db_tablas->GetStringSelection();//Hacemos una consulta
 		sistemas->Obtener_nombre_campos_y_valores(Cuadro,consulta);
 		sistemas->Liberar_consulta();
 	}
@@ -81,7 +81,7 @@ void VentanaPrincipal::evento_cambiar_campo( wxGridEvent& event )  {
 	char *consulta;
 	consulta=Patron_actualizar(sistemas->Recuperar_valor_viejo(),Cuadro,db_tablas,consulta);
 	if(!sistemas->Consulta(consulta)){
-		wxMessageBox("Error al hacer la consulta");
+		wxMessageBox(wxT("Error al hacer la consulta"));
 	}
 	delete consulta;
 	event.Skip();
@@ -115,12 +115,12 @@ void VentanaPrincipal::evento_cambiar_usuario( wxCommandEvent& event )  {
 		}
 	}
 	else{
-		wxMessageBox(wxT("Error, no se ha establecido una conexion con el servidor Mysql"),"Error de conexion",wxICON_ERROR);
+		wxMessageBox(wxT("Error, no se ha establecido una conexion con el servidor Mysql"),wxT("Error de conexion"),wxICON_ERROR);
 	}
 	event.Skip();
 }
 
 void VentanaPrincipal::evento_menu_creditos( wxCommandEvent& event )  {
-	wxMessageBox(wxT("~Administrador de base de datos Mysql~\n>Programado y modulado por Israel Lugo\n>Contactos: 0426-2075370\n< SOFTelixBM >"),"Creditos");
+	wxMessageBox(wxT("~Administrador de base de datos Mysql~\n>Programado y modulado por Israel Lugo\n>Contactos: 0426-2075370\n< SOFTelixBM >"),wxT("Creditos"));
 }
 

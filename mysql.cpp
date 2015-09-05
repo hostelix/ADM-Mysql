@@ -25,7 +25,7 @@ int Mysql::ReConectar(){
 }
 
 int Mysql::Conexion_db(){
-	if(mysql_real_connect(sock,servidor,usuario, password, base_de_datos, puerto=MYSQL_PORT, NULL, 0)){
+	if(mysql_real_connect(sock,servidor.fn_str(),usuario.fn_str(), password.fn_str(), base_de_datos.fn_str(), puerto=MYSQL_PORT, NULL, CLIENT_MULTI_STATEMENTS)){
 		return 1;
 	}
 	else{
@@ -43,7 +43,7 @@ void Mysql::Configurar_conexion(wxString host,wxString user, wxString pass, wxSt
 }
 
 int Mysql::Seleccionar_db(wxString db){
-	if(mysql_select_db(sock, db)){
+	if(mysql_select_db(sock, db.fn_str())){
 		//Error al seleccionar la DB
 		return 0;
 	}
@@ -58,7 +58,7 @@ int Mysql::Obtener_tablas(wxChoice tablas[]){
 		c = (int) mysql_num_fields(resultado);
 		while((fila = mysql_fetch_row(resultado))){
 			for(int j = 0 ; j < c ; j++){
-				(fila[j]==NULL) ? tablas->Append("NULL") : tablas->Append(fila[j]);
+				(fila[j]==NULL) ? tablas->Append(wxT("NULL")) : tablas->Append(wxString::FromAscii(fila[j]));
 			}
 		}
 		mysql_free_result(resultado); // Liberar el resultado de la consulta
@@ -87,7 +87,7 @@ int Mysql::Agragar_valor_fila_columnas(wxGrid *cuadro){
 		for(int k=0; k<f;k++){
 			fila = mysql_fetch_row(resultado);
 			for(int j = 0 ; j < c ; j++){
-				cuadro->SetCellValue(k,j,fila[j]);
+				cuadro->SetCellValue(k,j,wxString::FromAscii(fila[j]));
 			}
 		}
 		return 1;
@@ -113,11 +113,11 @@ bool Mysql::Verificar_si_existe_conexion(){
 }
 
 wxString Mysql::Errores(){
-	return mysql_error(sock);
+	return wxString::FromAscii(mysql_error(sock));
 }
 
 int Mysql::Obtener_nombre_campos_y_valores(wxGrid *cuadro,wxString consulta){
-	if(!mysql_query(sock,consulta)){
+	if(!mysql_query(sock,consulta.fn_str())){
 		if((resultado =  mysql_store_result(sock))) {
 			// Obtener el número de registros seleccionados:
 			f = (int) mysql_num_rows(resultado);
@@ -129,13 +129,13 @@ int Mysql::Obtener_nombre_campos_y_valores(wxGrid *cuadro,wxString consulta){
 				cuadro->AppendRows(f);//agregamos el numero de filas x resultado
 				for(int l = 0; l < c; l++) {
 					columna = mysql_fetch_field(resultado);
-					cuadro->SetColLabelValue( l,columna->name);
+					cuadro->SetColLabelValue( l,wxString::FromAscii(columna->name));
 					cuadro->SetRowLabelValue(l,wxString::Format(wxT("%i"),l+1));
 				}
 				for(int k=0; k<f;k++){
 					fila = mysql_fetch_row(resultado);
 					for(int j = 0 ; j < c ; j++){
-						cuadro->SetCellValue(k,j,fila[j]);
+						cuadro->SetCellValue(k,j,wxString::FromAscii(fila[j]));
 					}
 				}
 			}
@@ -185,7 +185,7 @@ int Mysql::Obtener_dbs(wxChoice db[]){
 		c = (int) mysql_num_fields(resultado);
 		while((fila = mysql_fetch_row(resultado))){
 			for(int j = 0 ; j < c ; j++){
-				(fila[j]==NULL) ? db->Append("NULL") : db->Append(fila[j]);
+				(fila[j]==NULL) ? db->Append(wxT("NULL")) : db->Append(wxString::FromAscii(fila[j]));
 			}
 		}
 		mysql_free_result(resultado); // Liberar el resultado de la consulta
@@ -198,7 +198,7 @@ int Mysql::Obtener_dbs(wxChoice db[]){
 
 
 bool Mysql::Cambiar_usuario(wxString new_usuario,wxString new_password,wxString new_db){
-	if(mysql_change_user(sock,new_usuario,new_password,new_db)){
+	if(mysql_change_user(sock,new_usuario.fn_str(),new_password.fn_str(),new_db.fn_str())){
 		return false;//No tuvo exito
 	}
 	else{

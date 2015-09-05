@@ -11,7 +11,7 @@ VDialogoDB::~VDialogoDB() {
 void VDialogoDB::evento_conectar_db( wxCommandEvent& event )  {
 	
 	if(campo_db->IsEmpty() || campo_password->IsEmpty() || campo_servidor->IsEmpty() || campo_usuario->IsEmpty()){
-		wxMessageBox(wxT("Por favor rellena todos los campos"),"Error",wxOK);
+		wxMessageBox(wxT("Por favor rellena todos los campos"),wxT("Error"),wxOK);
 	}
 	else{
 		wxString servidor= campo_servidor->GetValue();
@@ -26,7 +26,7 @@ void VDialogoDB::evento_conectar_db( wxCommandEvent& event )  {
 		int pase=sistemas->Conexion_db();
 		
 		if(pase){
-			int exito=wxMessageBox(wxT("Se a establecido la conexion con exito"),"Excelente",wxOK);
+			int exito=wxMessageBox(wxT("Se a establecido la conexion con exito"),wxT("Excelente"),wxOK);
 			if(exito){
 				sistemas->Conexion_exito(true);//Agramos true para ver que si se conecto!
 				sistemas->Agregar_si_recargo(false);//Agragamos false para que presione nuevamente el boton de recargar
@@ -34,7 +34,7 @@ void VDialogoDB::evento_conectar_db( wxCommandEvent& event )  {
 			}
 		}
 		else{
-			wxMessageBox(wxT("Error al conectar con la base de datos"),"Error",wxICON_ERROR);
+			wxMessageBox(wxT("Error al conectar con la base de datos"),wxT("Error"),wxICON_ERROR);
 			sistemas->Conectar();
 		}
 	}

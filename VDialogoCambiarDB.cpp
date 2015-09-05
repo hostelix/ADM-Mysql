@@ -28,7 +28,7 @@ void VDialogoCambiarDB::evento_dialogo_cambiar_db( wxCommandEvent& event )  {
 			EndModal(1);//cerramos la ventana
 		}
 		else{
-			wxMessageBox("Lo sentimos, hubo un error al cambiar la base de datos",wxT("Error!"));
+			wxMessageBox(wxT("Lo sentimos, hubo un error al cambiar la base de datos"),wxT("Error!"));
 		}
 	}
 	else{

@@ -1,8 +1,11 @@
 #ifndef __MYSQL_H_
 #define __MYSQL_H_
 #include "Ventanas.h"
-#include <windows.h>
-#include <mysql.h>
+#ifdef __WIN32__
+	#include <windows.h>	
+#endif
+
+#include <mysql/mysql.h>
 
 /*
 #include <wx/msgdlg.h>
